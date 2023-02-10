@@ -2,6 +2,7 @@ Spring Boot Coding Dojo-1
 ---
 ### How to run the application
 If we have a Postgres Database
+
 If we have a Postgres database setup and running and want to use it, you need to change the application configuration.
 
 We should edit the application.yml file into the following folder src/main/resources/application.yml.
@@ -9,8 +10,11 @@ We should edit the application.yml file into the following folder src/main/resou
 Change the following values with your Postgres information:
 
 datasource:
+
 password: .....
+
 username: postgres
+
 url: jdbc:postgresql://localhost:5432/postgres
 
 
@@ -28,10 +32,12 @@ Replace the {CITY_NAME} with London
 An example of the response:
 
 {
+
 "coord": {
 "lon": -0.1257,
 "lat": 51.5085
 },
+
 "weather": [
 {
 "id": 804,
@@ -40,21 +46,28 @@ An example of the response:
 "icon": "04d"
 }
 ],
+
 "base": "stations",
+
 "main": {
 "temp": 281.32,
 "pressure": 1035,
 "humidity": 68
 },
+
 "visibility": 10000,
+
 "wind": {
 "speed": 4.63,
 "deg": 260
 },
+
 "clouds": {
 "all": 100
 },
+
 "dt": 1676033400,
+
 "sys": {
 "type": 2,
 "id": 2075535,
@@ -62,16 +75,19 @@ An example of the response:
 "sunrise": 1676013877,
 "sunset": 1676048698
 },
+
 "id": 2643743,
+
 "name": "London",
+
 "cod": 200
+
 }
 
 ### Dependencies added
 * Postgresql
 * Lombok
 * Junit5
-
 
 ### The requirement:
 
