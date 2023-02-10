@@ -18,11 +18,7 @@ spring:
           lob:
             non_contextual_creation: true
 
-
-
 configuration:
   open-weather:
     appid: 02f6d80d4eb4063b7e1e98ac6b6c5f31
     url: http://api.openweathermap.org/data/2.5/weather?q={city}&APPID=${configuration.open-weather.appid}
-    #    url: http://api.openweathermap.org/data/2.5/weather?q=London&APPID=02f6d80d4eb4063b7e1e98ac6b6c5f31
-
