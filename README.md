@@ -1,6 +1,6 @@
 Spring Boot Coding Dojo-1
 ---
-###How to run the application
+### How to run the application
 If we have a Postgres Database
 If we have a Postgres database setup and running and want to use it, you need to change the application configuration.
 
@@ -15,7 +15,7 @@ url: jdbc:postgresql://localhost:5432/postgres
 
 
 
-###How to use the application
+### How to use the application
 To use the application with PostMan or Insomnia:
 
 POST - for save the data for the city
@@ -73,7 +73,7 @@ An example of the response:
 * Junit5
 
 
-### the requirement:
+### The requirement:
 
 
 Welcome to the Spring Boot Coding Dojo!
