@@ -94,6 +94,10 @@ An example of the response:
 * Lombok
 * Junit5
 
+
+>**PS - We can also create the tables with liquibase or flyway for a better control and management of the project **
+
+
 ### The requirement:
 
 
