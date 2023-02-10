@@ -11,11 +11,11 @@ Change the following values with your Postgres information:
 
 datasource:
 
-password: .....
+### password: .....
 
-username: postgres
+### username: postgres
 
-url: jdbc:postgresql://localhost:5432/postgres
+### url: jdbc:postgresql://localhost:5432/postgres
 
 
 
@@ -23,12 +23,17 @@ url: jdbc:postgresql://localhost:5432/postgres
 To use the application with PostMan or Insomnia:
 
 POST - for save the data for the city
+
 localhost:8080/weather?city={CITY_NAME}
+
 Replace the {CITY_NAME} with London
 
 GET - for get the data for the city
+
 localhost:8080/weather?city={CITY_NAME}
+
 Replace the {CITY_NAME} with London
+
 An example of the response:
 
 {
