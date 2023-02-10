@@ -59,31 +59,39 @@ public class WeatherServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(weatherService, "url", "http://api.openweathermap.org/data/2.5/weather?q=London&APPID=02f6d80d4eb4063b7e1e98ac6b6c5f31");
+
         weatherResponseDTO = new WeatherResponseDTO();
         weatherResponseDTO.setName("London");
+
         CoordDTO coordDTO = new CoordDTO();
         coordDTO.setLat(51.5085);
         coordDTO.setLon(-0.1257);
+
         MainDTO mainDTO = new MainDTO();
         mainDTO.setTemp(279.65);
         mainDTO.setPressure(1036);
         mainDTO.setHumidity(76);
+
         WindDTO windDTO = new WindDTO();
         windDTO.setSpeed(4.02);
         windDTO.setDeg(180);
+
         CloudsDTO cloudsDTO = new CloudsDTO();
         cloudsDTO.setAll(100);
+
         SysDTO sysDTO = new SysDTO();
         sysDTO.setType(2);
         sysDTO.setId(2075535);
         sysDTO.setCountry("GB");
         sysDTO.setSunrise(167);
         sysDTO.setSunset(701);
+
         WeatherDTO weatherDTO = new WeatherDTO();
         weatherDTO.setId(804);
         weatherDTO.setMain("clouds");
         weatherDTO.setDescription("overcast clouds");
         weatherDTO.setIcon("04d");
+
         weatherResponseDTO.setClouds(cloudsDTO);
         weatherResponseDTO.setCoord(coordDTO);
         weatherResponseDTO.setMain(mainDTO);
@@ -100,6 +108,7 @@ public class WeatherServiceTest {
     public void testFetchWeatherData() {
         String city = "London";
         String url = Constants.WEATHER_API_URL.replace("{city}", city).replace("{appid}", "02f6d80d4eb4063b7e1e98ac6b6c5f31");
+
         when(restTemplate.getForEntity(url, WeatherResponseDTO.class)).thenReturn(ResponseEntity.ok(weatherResponseDTO));
 
         WeatherResponseDTO result = weatherService.fetchWeatherData(city);
@@ -111,6 +120,7 @@ public class WeatherServiceTest {
     @Test
     public void testSaveWeatherData() {
         String city = "London";
+
         when(restTemplate.getForEntity(anyString(), eq(WeatherResponseDTO.class))).thenReturn(ResponseEntity.ok(weatherResponseDTO));
 
         weatherService.saveWeatherData(city);
@@ -122,9 +132,10 @@ public class WeatherServiceTest {
     @Test
     public void testGetWeatherData() {
         String city = "London";
-        when(entityManager.createQuery("SELECT w from WeatherResponseEntity w JOIN FETCH w.weather where w.name = :cityName " +
-                "ORDER BY w.id DESC", WeatherResponseEntity.class).setParameter("cityName", "London").setMaxResults(1).getSingleResult()).thenReturn(weatherResponseEntity);
 
+        when(entityManager.createQuery("SELECT w from WeatherResponseEntity w JOIN FETCH w.weather where w.name = :cityName " +
+                "ORDER BY w.id DESC", WeatherResponseEntity.class).setParameter("cityName", "London")
+                .setMaxResults(1).getSingleResult()).thenReturn(weatherResponseEntity);
         when(weatherResponseRepository.findByName(city)).thenReturn(Optional.of(weatherResponseEntity));
 
         WeatherResponseDTO result = weatherService.getWeatherData(city);
