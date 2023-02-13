@@ -95,7 +95,7 @@ An example of the response:
 * Junit5
 
 
->**PS - We can also create the tables with liquibase or flyway for a better control and management of the project **
+>**PS - Also I create the rest of the tables and now we have flyway for a better control and management of the project**
 
 
 ### The requirement:

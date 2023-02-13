@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
@@ -26,9 +27,6 @@ public class WeatherService {
     @PersistenceContext
     private EntityManager entityManager;
 
-//    @Value("${appId}")
-//    private String appId;
-
     @Value("${configuration.open-weather.url}")
     private String url;
 
@@ -36,7 +34,7 @@ public class WeatherService {
 
     private final WeatherResponseRepository weatherResponseRepository;
 
-    public WeatherResponseDTO fetchWeatherData(final String city) {
+    public WeatherResponseDTO fetchWeatherData(final String city) throws RestClientException {
         String urlWithCity = getUrl().replace("{city}", city);
         ResponseEntity<WeatherResponseDTO> response = restTemplate.getForEntity(urlWithCity, WeatherResponseDTO.class);
         return response.getBody();

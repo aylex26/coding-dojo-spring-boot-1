@@ -11,14 +11,14 @@ import com.assignment.spring.api.WindDTO;
 import com.assignment.spring.entity.WeatherResponseEntity;
 import com.assignment.spring.mapper.WeatherResponseMapper;
 import com.assignment.spring.repository.WeatherResponseRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +35,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WeatherServiceTest {
 
     @Mock
@@ -55,11 +54,12 @@ public class WeatherServiceTest {
 
     private WeatherResponseEntity weatherResponseEntity;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(weatherService, "url", "http://api.openweathermap.org/data/2.5/weather?q=London&APPID=02f6d80d4eb4063b7e1e98ac6b6c5f31");
-
+        ReflectionTestUtils.setField(weatherService, "restTemplate", restTemplate);
+        ReflectionTestUtils.setField(weatherService, "weatherResponseRepository", weatherResponseRepository);
         weatherResponseDTO = new WeatherResponseDTO();
         weatherResponseDTO.setName("London");
 
@@ -105,7 +105,7 @@ public class WeatherServiceTest {
     }
 
     @Test
-    public void testFetchWeatherData() {
+    public void test_Fetch_Weather_Data() {
         String city = "London";
         String url = Constants.WEATHER_API_URL.replace("{city}", city).replace("{appid}", "02f6d80d4eb4063b7e1e98ac6b6c5f31");
 
@@ -118,25 +118,25 @@ public class WeatherServiceTest {
     }
 
     @Test
-    public void testSaveWeatherData() {
+    public void test_Save_Weather_Data() {
         String city = "London";
+        String url = Constants.WEATHER_API_URL.replace("{city}", city).replace("{appid}", "02f6d80d4eb4063b7e1e98ac6b6c5f31");
 
         when(restTemplate.getForEntity(anyString(), eq(WeatherResponseDTO.class))).thenReturn(ResponseEntity.ok(weatherResponseDTO));
 
         weatherService.saveWeatherData(city);
 
-        verify(restTemplate, times(1)).getForEntity(anyString(), eq(WeatherResponseDTO.class));
+        verify(restTemplate, times(1)).getForEntity(url, WeatherResponseDTO.class);
         verify(weatherResponseRepository, times(1)).save(any());
     }
 
     @Test
-    public void testGetWeatherData() {
+    public void test_Get_Weather_Data() {
         String city = "London";
 
         when(entityManager.createQuery("SELECT w from WeatherResponseEntity w JOIN FETCH w.weather where w.name = :cityName " +
-                "ORDER BY w.id DESC", WeatherResponseEntity.class).setParameter("cityName", "London")
+                        "ORDER BY w.id DESC", WeatherResponseEntity.class).setParameter("cityName", "London")
                 .setMaxResults(1).getSingleResult()).thenReturn(weatherResponseEntity);
-        when(weatherResponseRepository.findByName(city)).thenReturn(Optional.of(weatherResponseEntity));
 
         WeatherResponseDTO result = weatherService.getWeatherData(city);
 

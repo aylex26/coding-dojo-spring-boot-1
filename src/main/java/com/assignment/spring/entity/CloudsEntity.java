@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "clouds")
+@Table(name = "cloud")
 public class CloudsEntity {
 
     @Id
